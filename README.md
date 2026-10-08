@@ -79,7 +79,8 @@ notebooks/
 ## Not Included
 - `lahman2025.bak` - full raw Lahman DB backup (SQL Server format, ~47MB)
 - `Salaries (Early).csv` - raw Lahman player-salary export (1985-2016); unused in the final analysis (see Known Gaps)
-- `mlb_payrolls (Recent).csv`, `archive.zip` - earlier/alternate payroll pulls superseded by `spotrac_payrolls.csv`
+- `mlb_payrolls (Recent).csv` - earlier Spotrac pull, same columns as `spotrac_payrolls.csv` plus Wins/Losses/Postseason, but only 2011-2024 (vs. 2011-2025) and values don't match exactly between the two for the same team-year; superseded, and its W/L/Postseason columns are unused anyway since the notebook sources W/L from `Teams.csv` instead
+- `archive.zip` - contains an older `mlb_payrolls.csv`, superseded by the above
 - `price_of_a_win_dashboard_1.html` - standalone interactive dashboard, kept local only
 
 ## Sources
