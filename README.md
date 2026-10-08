@@ -32,7 +32,7 @@ notebooks/
   - `salaries` / `team_payrolls` / `team_crosswalk`: built in the SQL script but **not used downstream** - Spotrac covers the full 2011-2025 window, so Lahman salary data is dead weight for this analysis (see Known Gaps)
   - `teams` (-> `data/Teams.csv`): the one Lahman table actually used, for `franchID`/`yearID`/`W`/`L` only
 - `data/TeamWAR.xlsx` -> `notebooks/WAR Concat.ipynb` -> `all_batting.csv` / `all_pitching.csv`
-- SQL cleaning output + CPI-U adjustment -> `data/Efficiency_Final.csv` (merge step not scripted - see Known Gaps)
+- SQL cleaning + CPI-U adjustment (`efficiency_final` view in `sql/CE_data_cleaning.sql`) -> `data/Efficiency_Final.csv`
 - `data/Efficiency_Final.csv` + `data/Teams.csv` (W/L only) -> `notebooks/CE Analysis.ipynb` -> findings
 
 ## Data Lineage
@@ -43,8 +43,8 @@ notebooks/
 | `data/TeamWAR.xlsx` | FanGraphs (manual pull) | - | WAR Concat.ipynb |
 | `data/all_pitching.csv` (+ `all_batting.csv`) | FanGraphs via TeamWAR.xlsx | WAR Concat.ipynb | SQL cleaning |
 | `data/spotrac_payrolls.csv` | Spotrac (manual pull) | - | SQL cleaning |
-| `data/CPI-U Data 2011-2025.csv` | BLS CPI-U | - | Efficiency_Final.csv merge (undocumented) |
-| `data/Efficiency_Final.csv` | merged SQL output + CPI-U | **missing/unscripted step** | CE Analysis.ipynb |
+| `data/CPI-U Data 2011-2025.csv` | BLS CPI-U | - | `efficiency_final` view (SQL) |
+| `data/Efficiency_Final.csv` | SQL `efficiency_final` view (constant 2025 dollars) | `sql/CE_data_cleaning.sql` | CE Analysis.ipynb |
 
 ## The CE+ Metric
 - Base measure: $/WAR (total payroll / total team WAR), per team-season
@@ -53,26 +53,27 @@ notebooks/
 - Inverted so higher CE+ = more efficient (fewer dollars per win)
 - Floor: team-seasons with total WAR < 7.5 excluded ($/WAR explodes near WAR = 0)
 
-## Findings
-- Gap between total and active $/WAR widened post-2020 (~$1.48M/WAR pre-2020 vs ~$1.86M/WAR after)
-- League-wide injury payroll has risen sharply over the last 5 years
-- Quadrant leaders: cheap-and-good teams (e.g. PIT, MIA) are efficient but not consistent winners
-- Quadrant laggards: LAA is the league's worst by efficiency - high spend, low return, across nine seasons
-- Expensive-and-good quadrant dominated by NYY and LAD
-- Dead-money regression: payroll + dead-money% explain wins, R² = 0.362
-- Payroll + CE+ regression explains wins better, R² = 0.648
-- Persistence: CE+ this year vs. next year correlation = 0.57 (moderate - some repeatable skill)
-- Pareto frontier: payroll-to-wins relationship bends/flattens around $80-120M
+## Highlights
+- Payroll + CE+ together explain 65% of variance in team wins (R² = 0.648) - efficiency isn't just noise around spending
+- CE+ is moderately persistent year to year (r = 0.57) - front-office efficiency looks like a repeatable skill, not luck
+- LAA is the league's single worst team by efficiency across the whole period; NYY/LAD are the rare teams that spend big *and* stay efficient
+- Payroll-to-wins returns bend/flatten around $80-120M - the Pareto frontier suggests diminishing value above that range
+
+## Limitations
+- CPI-adjustment step is scripted but not yet independently verified (see Known Gaps)
+- Team-seasons under 7.5 WAR are dropped from the CE+ metric ($/WAR is unstable near WAR = 0)
+- Dead/injured payroll tracking from Spotrac is sparse before 2013, understating early-era injury spending
+- WAR source (FanGraphs) and payroll source (Spotrac) are both third-party scrapes/pulls, not official league data
 
 ## Reproducing This
 1. Restore `lahman2025.bak` into a database (not included - SQL Server backup, ~47MB)
-2. Load `all_batting`/`all_pitching` (via `notebooks/WAR Concat.ipynb` output) and `spotrac_payrolls.csv` as tables in the same database
-3. Run `sql/CE_data_cleaning.sql`
-4. Merge SQL output with `data/CPI-U Data 2011-2025.csv` to produce `data/Efficiency_Final.csv` (step not currently scripted - see Known Gaps)
+2. Load `all_batting`/`all_pitching` (via `notebooks/WAR Concat.ipynb` output), `spotrac_payrolls.csv`, and `CPI-U Data 2011-2025.csv` (as `cpi_data`) as tables in the same database
+3. Run `sql/CE_data_cleaning.sql` end to end, including the `efficiency_final` view
+4. Export `efficiency_final` to CSV (see export line at the bottom of the SQL file) and diff against `data/Efficiency_Final.csv`
 5. Run `notebooks/CE Analysis.ipynb`
 
 ## Known Gaps / TODO
-- CPI-U merge / inflation-adjustment step into `Efficiency_Final.csv` is not captured in any script or notebook
+- CPI-adjustment step is scripted (`efficiency_final` view in `sql/CE_data_cleaning.sql`) but not yet verified end-to-end against the committed `Efficiency_Final.csv`
 - `all_batting.csv` (produced by `WAR Concat.ipynb`) is not retained in this repo
 - `salaries` / `team_payrolls` / `team_crosswalk` built in `sql/CE_data_cleaning.sql` are dead code - never consumed downstream, since Spotrac already covers the full 2011-2025 analysis window
 
