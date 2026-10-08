@@ -1,0 +1,8 @@
+.ipynb_checkpoints/
+.DS_Store
+
+# Not part of the ingestion/cleaning/analysis pipeline - kept locally only
+mlb_payrolls (Recent).csv
+archive.zip
+lahman2025.bak
+price_of_a_win_dashboard_1.html
