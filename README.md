@@ -14,7 +14,6 @@
 ## Repo Structure
 ```
 data/
-  Salaries (Early).csv
   Teams.csv
   TeamWAR.xlsx
   all_pitching.csv
@@ -29,17 +28,18 @@ notebooks/
 ```
 
 ## Pipeline
-- Lahman DB (`lahman2025.bak`, restored by hand, not in repo) -> `sql/CE_data_cleaning.sql`
+- Lahman DB (`lahman2025.bak`, restored by hand, archived not in repo) -> `sql/CE_data_cleaning.sql`
+  - `salaries` / `team_payrolls` / `team_crosswalk`: built in the SQL script but **not used downstream** - Spotrac covers the full 2011-2025 window, so Lahman salary data is dead weight for this analysis (see Known Gaps)
+  - `teams` (-> `data/Teams.csv`): the one Lahman table actually used, for `franchID`/`yearID`/`W`/`L` only
 - `data/TeamWAR.xlsx` -> `notebooks/WAR Concat.ipynb` -> `all_batting.csv` / `all_pitching.csv`
 - SQL cleaning output + CPI-U adjustment -> `data/Efficiency_Final.csv` (merge step not scripted - see Known Gaps)
-- `data/Efficiency_Final.csv` -> `notebooks/CE Analysis.ipynb` -> findings
+- `data/Efficiency_Final.csv` + `data/Teams.csv` (W/L only) -> `notebooks/CE Analysis.ipynb` -> findings
 
 ## Data Lineage
 
 | File | Source | Produced by | Consumed by |
 |---|---|---|---|
-| `data/Salaries (Early).csv` | Lahman DB | Lahman restore | SQL cleaning |
-| `data/Teams.csv` | Lahman DB | Lahman restore | SQL cleaning, CE Analysis.ipynb |
+| `data/Teams.csv` | Lahman DB | Lahman restore | CE Analysis.ipynb (`franchID`, `yearID`, `W`, `L` only) |
 | `data/TeamWAR.xlsx` | FanGraphs (manual pull) | - | WAR Concat.ipynb |
 | `data/all_pitching.csv` (+ `all_batting.csv`) | FanGraphs via TeamWAR.xlsx | WAR Concat.ipynb | SQL cleaning |
 | `data/spotrac_payrolls.csv` | Spotrac (manual pull) | - | SQL cleaning |
@@ -74,11 +74,13 @@ notebooks/
 ## Known Gaps / TODO
 - CPI-U merge / inflation-adjustment step into `Efficiency_Final.csv` is not captured in any script or notebook
 - `all_batting.csv` (produced by `WAR Concat.ipynb`) is not retained in this repo
-- Interactive dashboard (`price_of_a_win_dashboard_1.html`) kept local only, not part of this repo
+- `salaries` / `team_payrolls` / `team_crosswalk` built in `sql/CE_data_cleaning.sql` are dead code - never consumed downstream, since Spotrac already covers the full 2011-2025 analysis window
 
 ## Not Included
 - `lahman2025.bak` - full raw Lahman DB backup (SQL Server format, ~47MB)
+- `Salaries (Early).csv` - raw Lahman player-salary export (1985-2016); unused in the final analysis (see Known Gaps)
 - `mlb_payrolls (Recent).csv`, `archive.zip` - earlier/alternate payroll pulls superseded by `spotrac_payrolls.csv`
+- `price_of_a_win_dashboard_1.html` - standalone interactive dashboard, kept local only
 
 ## Sources
 - Lahman Baseball Database
