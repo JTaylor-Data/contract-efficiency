@@ -48,7 +48,23 @@ The analysis and payroll data have no way to account for deferred money, which c
 
 ## How to Recreate it
 
-
+```
+Contract Efficiency/
+├── README.md
+├── data/
+│   ├── CPI-U Data 2011-2025.csv
+│   ├── Efficiency_Final.csv
+│   ├── TeamWAR (Split into all_batting - pitching).xlsx
+│   ├── Teams.csv
+│   ├── all_batting.csv
+│   ├── all_pitching.csv
+│   └── spotrac_payrolls.csv
+├── notebooks/
+│   ├── CE Analysis.ipynb
+│   └── WAR Concat.ipynb
+└── sql/
+    └── CE_data_cleaning.sql
+```
 
 ## About
 
