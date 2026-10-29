@@ -23,10 +23,10 @@ Contract Efficiency+ (CE+) is designed to be an easily interpretable metric answ
 
 ## Key Findings
 - TBR and MIL have a 11/15 & 9/15 seasons with below average payroll and above average win rate, the highest in the sample.
-- LAD is one of the only large payrolls able to maintain near league average efficiency 
-- LAA are the least efficient front office in baseball with the worst CE+, most expensive and poor teams, and high dead money %
-- Dead money % has a stronger association with wins than total payroll, however the most efficient team (TBR) runs a high dead money% overall.
-- CE+ is meaningfully sticky (R^2 = 0.57)
+- LAD averages 96.2 Wins (highest in the league) and their average CE+ sits below average (95), but is among the best for high payroll teams, driving success
+- LAA have the lowest single season CE+ value of 38 in 2025, the most expensive and bad seasons (11/15), and the lowest average CE+ over the period (seen in graph above).
+- +1 SD of total payroll associates with ~3.5 extra wins. +1 SD of dead money % is associated with ~6 fewer wins (R^2 = 0.362). Dead money % has a remarkably strong relationship with Wins.
+- CE+ is meaningfully sticky (r = 0.57, R^2 = 0.33) despite capturing volatility of injury luck and other factors.
 - HOU and CLE lead in appearances on the Pareto Frontier (the lowest payroll at each win total), with 7 each.
 - Clear diminishing returns to payroll beyond $100-120M among frontier (efficient) teams, which doesn't hold among ALL teams in the league.
 - Houston, Cardinals, and Braves stand out as moderate-payroll teams sustaining above-average efficiency even as their spending grows.
