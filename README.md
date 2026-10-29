@@ -5,6 +5,15 @@ $/WAR by MLB team-season, standardized into a single metric
 
 ## Notebook Structure
 
+Analysis is broken into seven sections:
+
+1. League Wide Trends
+2. Team-Year analysis - most efficient teams relative to results
+3. Individual team time series efficiency analysis
+4. Dead Money Analysis - Where is the waste?
+5. Contract Efficiency+ (CE+) - A standardized spending efficiency metric
+6. Pareto Frontier - A theory about the Rays dominance
+7. Conclusions
 
 ## What is it?
 Contract Efficiency+ (CE+) is designed to be an easily interpretable metric answering a question fans, media, and front offices argue about and reference constantly, how well does a team spend its money? It measures how well a team converts payroll into on field value (measured with fWAR), standardized so 100 is league average. A team with a score of 120 is getting much more value from the marginal dollar than their peers, and a team scoring 80 significantly less. The goal is not just to rank the teams, but determine the strategies employed by the most efficient teams and if those strategies are scalable to payrolls of all sizes. 
@@ -23,9 +32,23 @@ Contract Efficiency+ (CE+) is designed to be an easily interpretable metric answ
 
 ## Limitations and Next Steps
 
+The dataset is missing many values for injury data pre 2015, thus certain payroll analysis was only possible for the period of 2015-2025.
+
+fWAR was used as the measure of on field value throughout the project. THis analysis excludes bWAR and does not account for any differences in a player/team fWAR and bWAR. Perhaps in future work an equal weighted average of the two values might serve as the most accurate value proxy.
+
+The analysis and payroll data have no way to account for deferred money, which can skew a teams current $/WAR metrics, artifically infalting some teams CE+ scores (ex. Dodgers deferred $680M of Ohtani's contract)
+
 ## Data and Methodology
 
+- Payroll: Spotrac.com, 2011-2025, inflation-adjusted to real 2025 USD using FRED’s CPI-U.
+- WAR: Fangraphs (fWAR), aggregated to the team-year level. Chosen over bWAR because bWAR’s pitching component relies on RA/9, which doesn’t isolate pitcher value well.
+- 2020 excluded entirely — the 60-game season distorts any rate-based comparison.
+- Pre-2015 seasons dropped from active/injured-payroll analysis. Injury payroll data isn’t available before 2015, and including those years would bias active $/WAR estimates.
+- Team-years under 7.5 WAR excluded from CE+ and the diminishing-returns analysis (5 observations). $/WAR mathematically explodes as WAR approaches zero and these cases add noise, not signal.
+
 ## How to Recreate it
+
+
 
 ## About
 
