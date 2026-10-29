@@ -54,7 +54,7 @@ Contract Efficiency/
 ├── data/
 │   ├── CPI-U Data 2011-2025.csv
 │   ├── Efficiency_Final.csv
-│   ├── TeamWAR (Split into all_batting - pitching).xlsx
+│   ├── TeamWAR (Split into all_batting - pitching with WAR_concat.ipynb).xlsx
 │   ├── Teams.csv
 │   ├── all_batting.csv
 │   ├── all_pitching.csv
@@ -66,6 +66,14 @@ Contract Efficiency/
     └── CE_data_cleaning.sql
 ```
 
+2 options:
+1. Download **Efficiency_Final & Teams.csv** in the data folder. Download CE Analysis.ipynb in the notebooks folder and run start to finish.
+
+2. To recreate from the original data, Download **CPI data, Teams, all_batting, all_pitching, spotrac_payrolls, CE Analysis, and CE_data_cleaning**. Ensure all files are in the same folder and run CE_data_cleaning end to end. It will produce "Efficiency_Final.csv". At this point refer to Option 1.
+
 ## About
 
+This project is part of an ongoing portfolio exploring data analytics, machine learning, statistics, and my passion for the game of baseball. I'm a third-year Economics student at the University of Toronto (Focus in DA, Statistics Minor). Feel free to reach out if you'd like to talk shop or have feedback on the analysis.
+
+josh.scott.tay@gmail.com |  [Linkedin](https://www.linkedin.com/in/joshua-taylor-86450a32a/)  
 
