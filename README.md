@@ -34,7 +34,7 @@ Contract Efficiency+ (CE+) is designed to be an easily interpretable metric answ
 
 The dataset is missing many values for injury data pre 2015, thus certain payroll analysis was only possible for the period of 2015-2025.
 
-fWAR was used as the measure of on field value throughout the project. This analysis excludes bWAR and does not account for any differences in a player/team fWAR and bWAR. Perhaps in future work an equal weighted average of the two values might serve as the most accurate value proxy.
+fWAR was used as the measure of on field value throughout the project. This analysis excludes bWAR and does not account for any differences in a player/team fWAR and bWAR.
 
 The analysis and payroll data have no way to account for deferred money, which can skew a teams current $/WAR metrics, artificially inflating some teams CE+ scores (ex. Dodgers deferred $680M of Ohtani's contract)
 
