@@ -19,7 +19,7 @@ Analysis is broken into seven sections:
 Contract Efficiency+ (CE+) is designed to be an easily interpretable metric answering a question fans, media, and front offices argue about and reference constantly, how well does a team spend its money? It measures how well a team converts payroll into on field value (measured with fWAR), standardized so 100 is league average. A team with a score of 120 is getting much more value from the marginal dollar than their peers, and a team scoring 80 significantly less. The goal is not just to rank the teams, but determine the strategies employed by the most efficient teams and if those strategies are scalable to payrolls of all sizes. 
 
 ## Key Findings
-- TBR and MIL have a 11/15 & 9/15 seasons with below average payroll and above average winningness, the highest in the sample.
+- TBR and MIL have a 11/15 & 9/15 seasons with below average payroll and above average win rate, the highest in the sample.
 - LAD is one of the only large payrolls able to maintain near league average efficiency 
 - LAA are the least efficient front office in baseball with the worst CE+, most expensive and poor teams, and high dead money %
 - Dead money % has a stronger association with wins than total payroll, however the most efficient team (TBR) runs a high dead money% overall.
@@ -34,9 +34,11 @@ Contract Efficiency+ (CE+) is designed to be an easily interpretable metric answ
 
 The dataset is missing many values for injury data pre 2015, thus certain payroll analysis was only possible for the period of 2015-2025.
 
-fWAR was used as the measure of on field value throughout the project. THis analysis excludes bWAR and does not account for any differences in a player/team fWAR and bWAR. Perhaps in future work an equal weighted average of the two values might serve as the most accurate value proxy.
+fWAR was used as the measure of on field value throughout the project. This analysis excludes bWAR and does not account for any differences in a player/team fWAR and bWAR. Perhaps in future work an equal weighted average of the two values might serve as the most accurate value proxy.
 
-The analysis and payroll data have no way to account for deferred money, which can skew a teams current $/WAR metrics, artifically infalting some teams CE+ scores (ex. Dodgers deferred $680M of Ohtani's contract)
+The analysis and payroll data have no way to account for deferred money, which can skew a teams current $/WAR metrics, artificially inflating some teams CE+ scores (ex. Dodgers deferred $680M of Ohtani's contract)
+
+Next steps: future work could weight fWAR/bWAR equally, or adjust for deferred-money structures so CE+ scores aren't inflated by contracts like Ohtani's.
 
 ## Data and Methodology
 
