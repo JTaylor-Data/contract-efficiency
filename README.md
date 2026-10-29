@@ -16,6 +16,9 @@ Analysis is broken into seven sections:
 7. Conclusions
 
 ## What is it?
+
+<img width="719" height="355" alt="image" src="https://github.com/user-attachments/assets/cfdacf93-1d72-4b4e-b28f-91f54dfe6759" />
+
 Contract Efficiency+ (CE+) is designed to be an easily interpretable metric answering a question fans, media, and front offices argue about and reference constantly, how well does a team spend its money? It measures how well a team converts payroll into on field value (measured with fWAR), standardized so 100 is league average. A team with a score of 120 is getting much more value from the marginal dollar than their peers, and a team scoring 80 significantly less. The goal is not just to rank the teams, but determine the strategies employed by the most efficient teams and if those strategies are scalable to payrolls of all sizes. 
 
 ## Key Findings
