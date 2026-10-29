@@ -15,7 +15,8 @@
 ```
 data/
   Teams.csv
-  TeamWAR.xlsx
+  TeamWAR (Split into all_batting - pitching).xlsx
+  all_batting.csv
   all_pitching.csv
   spotrac_payrolls.csv
   CPI-U Data 2011-2025.csv
@@ -28,20 +29,18 @@ notebooks/
 ```
 
 ## Pipeline
-- Lahman DB (`lahman2025.bak`, restored by hand, archived not in repo) -> `sql/CE_data_cleaning.sql`
-  - `salaries` / `team_payrolls` / `team_crosswalk`: built in the SQL script but **not used downstream** - Spotrac covers the full 2011-2025 window, so Lahman salary data is dead weight for this analysis (see Known Gaps)
-  - `teams` (-> `data/Teams.csv`): the one Lahman table actually used, for `franchID`/`yearID`/`W`/`L` only
-- `data/TeamWAR.xlsx` -> `notebooks/WAR Concat.ipynb` -> `all_batting.csv` / `all_pitching.csv`
+- `data/TeamWAR (Split into all_batting - pitching).xlsx` -> `notebooks/WAR Concat.ipynb` -> `all_batting.csv` / `all_pitching.csv`
 - SQL cleaning + CPI-U adjustment (`efficiency_final` view in `sql/CE_data_cleaning.sql`) -> `data/Efficiency_Final.csv`
 - `data/Efficiency_Final.csv` + `data/Teams.csv` (W/L only) -> `notebooks/CE Analysis.ipynb` -> findings
+- `data/Teams.csv` (`franchID`/`yearID`/`W`/`L` only) comes from a one-time Lahman DB restore (`lahman2025.bak`, not in repo); the SQL script no longer touches Lahman salary data - the earlier `salaries` / `team_payrolls` / `team_crosswalk` dead-code tables were removed since Spotrac already covers the full 2011-2025 window (see Known Gaps)
 
 ## Data Lineage
 
 | File | Source | Produced by | Consumed by |
 |---|---|---|---|
 | `data/Teams.csv` | Lahman DB | Lahman restore | CE Analysis.ipynb (`franchID`, `yearID`, `W`, `L` only) |
-| `data/TeamWAR.xlsx` | FanGraphs (manual pull) | - | WAR Concat.ipynb |
-| `data/all_pitching.csv` (+ `all_batting.csv`) | FanGraphs via TeamWAR.xlsx | WAR Concat.ipynb | SQL cleaning |
+| `data/TeamWAR (Split into all_batting - pitching).xlsx` | FanGraphs (manual pull) | - | WAR Concat.ipynb |
+| `data/all_batting.csv` + `data/all_pitching.csv` | FanGraphs via TeamWAR xlsx | WAR Concat.ipynb | SQL cleaning |
 | `data/spotrac_payrolls.csv` | Spotrac (manual pull) | - | SQL cleaning |
 | `data/CPI-U Data 2011-2025.csv` | BLS CPI-U | - | `efficiency_final` view (SQL) |
 | `data/Efficiency_Final.csv` | SQL `efficiency_final` view (constant 2025 dollars) | `sql/CE_data_cleaning.sql` | CE Analysis.ipynb |
@@ -66,16 +65,13 @@ notebooks/
 - WAR source (FanGraphs) and payroll source (Spotrac) are both third-party scrapes/pulls, not official league data
 
 ## Reproducing This
-1. Restore `lahman2025.bak` into a database (not included - SQL Server backup, ~47MB)
-2. Load `all_batting`/`all_pitching` (via `notebooks/WAR Concat.ipynb` output), `spotrac_payrolls.csv`, and `CPI-U Data 2011-2025.csv` (as `cpi_data`) as tables in the same database
-3. Run `sql/CE_data_cleaning.sql` end to end, including the `efficiency_final` view
-4. Export `efficiency_final` to CSV (see export line at the bottom of the SQL file) and diff against `data/Efficiency_Final.csv`
-5. Run `notebooks/CE Analysis.ipynb`
+1. Load `data/all_batting.csv`, `data/all_pitching.csv`, `data/spotrac_payrolls.csv`, and `data/CPI-U Data 2011-2025.csv` (as `cpi_data`) as tables in a database
+2. Run `sql/CE_data_cleaning.sql` end to end, including the `efficiency_final` view
+3. Export `efficiency_final` to CSV (see export line at the bottom of the SQL file) and diff against `data/Efficiency_Final.csv`
+4. Run `notebooks/CE Analysis.ipynb` (uses `data/Teams.csv` for W/L only, from a one-time Lahman DB restore not included here)
 
 ## Known Gaps / TODO
-- CPI-adjustment step is scripted (`efficiency_final` view in `sql/CE_data_cleaning.sql`) but not yet verified end-to-end against the committed `Efficiency_Final.csv`
-- `all_batting.csv` (produced by `WAR Concat.ipynb`) is not retained in this repo
-- `salaries` / `team_payrolls` / `team_crosswalk` built in `sql/CE_data_cleaning.sql` are dead code - never consumed downstream, since Spotrac already covers the full 2011-2025 analysis window
+- CPI-adjustment step is scripted (`efficiency_final` view in `sql/CE_data_cleaning.sql`) and spot-checked against the committed `Efficiency_Final.csv` (payroll figures match within ~$25 on multi-million dollar values, $/WAR within $1 - rounding noise, not a logic discrepancy), but not yet verified end-to-end inside a live database run
 
 ## Not Included
 - `lahman2025.bak` - full raw Lahman DB backup (SQL Server format, ~47MB)
