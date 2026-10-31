@@ -5,7 +5,7 @@ $/WAR by MLB team-season, standardized into a single metric
 
 ## Notebook Structure
 
-Analysis is broken into seven sections:
+Analysis can be found in **notebooks/CE Analysis.ipynb** nad is broken into seven sections 
 
 1. League Wide Trends
 2. Team-Year analysis - most efficient teams relative to results
